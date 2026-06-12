@@ -19,6 +19,14 @@ async def add_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             await update.message.reply_text(f"{name} artıq siyahıda var ✅")
 
+    elif text == "-":
+    if name in users:
+        users.remove(name)
+        await update.message.reply_text(f"{name} siyahıdan silindi ❌")
+    else:
+        await update.message.reply_text(f"{name} siyahıda yoxdur ⚠️")
+            
+
 async def siyahi(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if users:
         msg = "\n".join([f"{i+1}. {u}" for i, u in enumerate(users)])
