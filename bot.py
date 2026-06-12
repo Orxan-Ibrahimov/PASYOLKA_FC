@@ -18,6 +18,14 @@ async def add_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(f"{name} qeyd olundu ✔")
         else:
             await update.message.reply_text(f"{name} artıq siyahıda var ✅")
+
+            # ➖ REMOVE
+    elif update.message.text.strip() == "-":
+        if name in users:
+            users.remove(name)
+            await update.message.reply_text(f"{name} siyahıdan silindi ❌")
+        else:
+            await update.message.reply_text(f"{name} siyahıda yoxdur ⚠️")
             
             
 
