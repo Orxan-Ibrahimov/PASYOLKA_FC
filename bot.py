@@ -1,4 +1,5 @@
 import os
+import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 
@@ -25,10 +26,20 @@ async def siyahi(update: Update, context: ContextTypes.DEFAULT_TYPE):
         msg = "Siyahı boşdur"
     await update.message.reply_text(msg)
 
-app = Application.builder().token(TOKEN).build()
 
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("siyahi", siyahi))
-app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, add_user))
+async def main():
+    app = Application.builder().token(TOKEN).build()
 
-app.run_polling()
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("siyahi", siyahi))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, add_user))
+
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling()
+
+    await asyncio.Event().wait()   # botu açıq saxlayır
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
