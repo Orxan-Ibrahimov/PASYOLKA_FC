@@ -1,30 +1,31 @@
+import os
 from telegram import Update
-from telegram.ext import ApplicationBuilder, MessageHandler, CommandHandler, ContextTypes, filters
+from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 
-TOKEN = "BURAYA_BOT_TOKEN"
+TOKEN = os.getenv("TOKEN")
 
 users = set()
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Futbol botu aktivdir. + yazın.")
+    await update.message.reply_text("Futbol botu aktivdir. '+' yazın.")
 
 async def add_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = update.message.text
-    if text == "+":
-        users.add(update.message.from_user.first_name)
-        await update.message.reply_text("Qeyd olundun ✔")
+    if update.message.text == "+":
+        name = update.message.from_user.first_name
+        users.add(name)
+        await update.message.reply_text(f"{name} qeyd olundu ✔")
 
-async def list_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def siyahi(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if users:
         msg = "\n".join([f"{i+1}. {u}" for i, u in enumerate(users)])
     else:
-        msg = "Hələ heç kim yoxdur."
+        msg = "Siyahı boşdur"
     await update.message.reply_text(msg)
 
-app = ApplicationBuilder().token(TOKEN).build()
+app = Application.builder().token(TOKEN).build()
 
 app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("siyahi", siyahi))
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, add_user))
-app.add_handler(CommandHandler("siyahi", list_users))
 
 app.run_polling()
