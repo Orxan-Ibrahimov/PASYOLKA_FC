@@ -1,6 +1,7 @@
 services:
   - type: web
-    name: my-bot
+    name: futbol-bot
     env: python
-    runtime: python
     pythonVersion: 3.11.8
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
