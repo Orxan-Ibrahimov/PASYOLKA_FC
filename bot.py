@@ -4,16 +4,19 @@ from telegram.ext import Application, CommandHandler, MessageHandler, ContextTyp
 
 TOKEN = os.getenv("TOKEN")
 
-users = set()
+users = []
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Futbol botu aktivdir. '+' yazın.")
 
 async def add_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.message.text == "+":
+    if update.message.text.strip() == "+":
         name = update.message.from_user.first_name
-        users.add(name)
-        await update.message.reply_text(f"{name} qeyd olundu ✔")
+        if name not in users:
+            users.append(name)
+            await update.message.reply_text(f"{name} qeyd olundu ✔")
+        else:
+            await update.message.reply_text(f"{name} artıq siyahıda var ✅")
 
 async def siyahi(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if users:

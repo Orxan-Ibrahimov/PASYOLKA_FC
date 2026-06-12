@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: my-bot
+    env: python
+    runtime: python
+    pythonVersion: 3.11.8
