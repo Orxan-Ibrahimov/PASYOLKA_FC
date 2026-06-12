@@ -11,19 +11,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Futbol botu aktivdir. '+' yazın.")
 
 async def add_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
-   if text == "+":
-    if name not in users:
-        users.append(name)
-        await update.message.reply_text(f"{name} qeyd olundu ✔")
-    else:
-        await update.message.reply_text(f"{name} artıq siyahıda var ✅")
-
-elif text == "-":
-    if name in users:
-        users.remove(name)
-        await update.message.reply_text(f"{name} siyahıdan silindi ❌")
-    else:
-        await update.message.reply_text(f"{name} siyahıda yoxdur ⚠️")
+    if update.message.text.strip() == "+":
+        name = update.message.from_user.first_name
+        if name not in users:
+            users.append(name)
+            await update.message.reply_text(f"{name} qeyd olundu ✔")
+        else:
+            await update.message.reply_text(f"{name} artıq siyahıda var ✅")
+            
             
 
 async def siyahi(update: Update, context: ContextTypes.DEFAULT_TYPE):
